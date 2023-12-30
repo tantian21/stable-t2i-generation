@@ -21,7 +21,9 @@ pytorch-cuda  -11.6
 
 # Evaluation
 Download Pretrained Model
+
 For bird. Download and save it to ./code/saved_models/bird/
+
 For coco. Download and save it to ./code/saved_models/coco/
 
 # Performance
