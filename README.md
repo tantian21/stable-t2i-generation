@@ -27,3 +27,5 @@ For coco. Download and save it to ./code/saved_models/coco/
 # Performance
 |Model|CUB|Coco|
 |---|---|---|
+|FID↓|10.14|14.59|
+|IS|5.20|20.09|
