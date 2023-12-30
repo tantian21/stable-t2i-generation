@@ -18,3 +18,10 @@ pytorch-cuda  -11.6
 2.Download the [birds](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html) image data. Extract them to data/birds/
 
 3.Download [coco2014](http://cocodataset.org/#download) dataset and extract the images to data/coco/images/
+
+# Evaluation
+Download Pretrained Model
+For bird. Download and save it to ./code/saved_models/bird/
+For coco. Download and save it to ./code/saved_models/coco/
+
+# Performance
