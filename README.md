@@ -25,3 +25,5 @@ For bird. Download and save it to ./code/saved_models/bird/
 For coco. Download and save it to ./code/saved_models/coco/
 
 # Performance
+|Model|CUB|Coco|
+|---|---|---|
