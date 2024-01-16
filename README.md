@@ -1,5 +1,5 @@
 # Bridging the Domain Gap Arising from Text Description Differences for Stable Text-to-Image Generation(ICASSP 2024)
-
+![](/image)
 Codes and pre-trained models for 'BRIDGING THE DOMAIN GAP ARISING FROM TEXT DESCRIPTION DIFFERENCES FOR STABLE TEXT-TO-IMAGE GENERATION'.
 Official Pytorch implementation for the paper Bridging the Domain Gap Arising from Text Description Differences for Stable Text-to-Image Generation by Tian Tan, Weimin Tan, Xuhao Jiang, Yueming Jiang, Bo Yan.
 
