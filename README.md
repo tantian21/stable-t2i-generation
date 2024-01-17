@@ -24,7 +24,7 @@ Download Pretrained Model
 
 For [bird](https://drive.google.com/file/d/1MtIzH7S41m4qnj8wbQl6K2C5B8eCBCOp/view?usp=drive_link). Download and save it to ./code/saved_models/bird/
 
-For coco. Download and save it to ./code/saved_models/coco/
+For [coco](https://drive.google.com/file/d/1dszvfAsCvWiyHrD0cv_Pdlh_07p-UaWS/view?usp=drive_link). Download and save it to ./code/saved_models/coco/
 
 # Performance
 |Model|CUB|Coco|
