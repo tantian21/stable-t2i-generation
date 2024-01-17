@@ -283,7 +283,7 @@ def train(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', default='bird')#[bird, flower, celeba,coco]
+    parser.add_argument('--dataset', default='bird')#[bird, coco]
     parser.add_argument('--batch_size', default=24, type=int)
     parser.add_argument('--num_workers', default=4, type=int)
     parser.add_argument('--learning_rate', default=2e-4, type=float)
