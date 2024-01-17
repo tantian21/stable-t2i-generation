@@ -40,11 +40,7 @@ def truncated_noise(batch_size=1, dim_z=100, truncation=1., seed=None):
 
 
 #########   MAGP   ########
-def MA_GP(img, sent,out):#out是关于img和sent的相关程度
-    #torch.autograd.grad
-    #outputs求导因变量
-    #inputs求导自变量
-    #返回outputs对inputs的梯度
+def MA_GP(img, sent,out):
     grads = torch.autograd.grad(outputs=out,
                             inputs=(img, sent),
                             grad_outputs=torch.ones(out.size()).cuda(),
@@ -91,65 +87,23 @@ def train(args):
         model_path = args.load_model_path
         checkpoint = torch.load(model_path)
         G_checkpoints=checkpoint['model']['netG']
-        #G_checkpoints = {
-        #    key[7:]: value
-        #    for key, value in G_checkpoints.items()
-        #}
         netG.load_state_dict(G_checkpoints)
-
-        new_checkpoint=torch.load('./Coco_checkpoints/state_epoch_005.pth')['model']['netG']
-        new_dict={}
-        for k,v in new_checkpoint.items():
-            if 'GBlocks.2' in k or 'GBlocks.3' in k:
-                new_dict[k]=v
-                print(k)
-        netG.load_state_dict(new_dict,strict=False)
-
-
-        new_checkpoint=torch.load('./Coco_checkpoints/state_epoch_290.pth')['model']['netG']
-        new_dict={}
-        for k,v in new_checkpoint.items():
-            if 'GBlocks.1' in k or 'GBlocks.3' in k:
-                new_dict[k[7:]]=v
-                print(k)
-        netG.load_state_dict(new_dict,strict=False)
-
-
-        new_checkpoint=torch.load('./Coco_checkpoints/state_epoch_003.pth')['model']['netG']
-        new_dict={}
-        for k,v in new_checkpoint.items():
-            if 'GBlocks.4' in k:
-                new_dict[k]=v
-                print(k)
-        netG.load_state_dict(new_dict,strict=False)
-
 
         for param in netG.named_parameters():
             param[1].requires_grad = True
         netG.train()
 
         D_checkpoints = checkpoint['model']['netD']
-        #D_checkpoints = {
-        #    key[7:]: value
-        #    for key, value in D_checkpoints.items()
-        #}
         netD.load_state_dict(D_checkpoints)
         for p in netD.parameters():
             p.requires_grad = True
         netD.train()
 
         C_checkpoints = checkpoint['model']['netC']
-        #C_checkpoints = {
-        #    key[7:]: value
-        #    for key, value in C_checkpoints.items()
-        #}
         netC.load_state_dict(C_checkpoints)
         for p in netC.parameters():
             p.requires_grad = True
         netC.train()
-
-        #optimizerG.load_state_dict(checkpoint['optimizers']['optimizerG'])
-        #optimizerD.load_state_dict(checkpoint['optimizers']['optimizerD'])
 
 
     elif args.load_model_path!=None:
@@ -171,7 +125,7 @@ def train(args):
 
     batch_size=args.batch_size
 
-    from dataprocess import Bird_Dataset_DF_GAN,Celeba_Dataset,Flower_Dataset,Bird_Dataset_DAE_ATTRS,Coco_Dataset
+    from dataprocess import Bird_Dataset_AFM,Coco_Dataset
     train_dataset = Bird_Dataset_DF_GAN('train')
     test_dataset = Bird_Dataset_DF_GAN('test')
     loader_kwargs = {
@@ -232,7 +186,7 @@ def train(args):
         netG.train()
 
 
-    for epoch in range(11,2000):
+    for epoch in range(2000):
         loop = tqdm(total=int(train_loader.__len__()))
         for step, data in enumerate(train_loader, 0):
             imgs, attrs,caps,cap_lens,_ = data
@@ -257,25 +211,25 @@ def train(args):
             attr_emb0,attr_emb1,attr_emb2=attr_emb0.to(device).requires_grad_(),attr_emb1.to(device).requires_grad_(),attr_emb2.to(device).requires_grad_()
 
             real_features= netD(imgs)
-            pred_real, errD_real = predict_loss(netC, real_features,sent_emb, negtive=False)  # hinge loss，文本和图像的匹配程度
-            #pred_real0, errD_real0 = predict_loss(netC, real_features,attr_emb0, negtive=False)  # hinge loss，文本和图像的匹配程度
-            #pred_real1, errD_real1 = predict_loss(netC, real_features,attr_emb1, negtive=False)  # hinge loss，文本和图像的匹配程度
-            #pred_real2, errD_real2 = predict_loss(netC, real_features,attr_emb2, negtive=False)  # hinge loss，文本和图像的匹配程度
+            pred_real, errD_real = predict_loss(netC, real_features,sent_emb, negtive=False)  
+            #pred_real0, errD_real0 = predict_loss(netC, real_features,attr_emb0, negtive=False) 
+            #pred_real1, errD_real1 = predict_loss(netC, real_features,attr_emb1, negtive=False)  
+            #pred_real2, errD_real2 = predict_loss(netC, real_features,attr_emb2, negtive=False)  
             mis_features = torch.cat((real_features[batch_size//2:], real_features[:batch_size//2]), dim=0)
-            _, errD_mis = predict_loss(netC, mis_features, sent_emb, negtive=True)  # hinge loss，文本和图像的匹配程度
-            #_, errD_mis0 = predict_loss(netC, mis_features, attr_emb0, negtive=True)  # hinge loss，文本和图像的匹配程度
-            #_, errD_mis1 = predict_loss(netC, mis_features, attr_emb1, negtive=True)  # hinge loss，文本和图像的匹配程度
-            #_, errD_mis2 = predict_loss(netC, mis_features, attr_emb2, negtive=True)  # hinge loss，文本和图像的匹配程度
+            _, errD_mis = predict_loss(netC, mis_features, sent_emb, negtive=True)  
+            #_, errD_mis0 = predict_loss(netC, mis_features, attr_emb0, negtive=True)  
+            #_, errD_mis1 = predict_loss(netC, mis_features, attr_emb1, negtive=True)  
+            #_, errD_mis2 = predict_loss(netC, mis_features, attr_emb2, negtive=True)  
 
             noise = torch.randn(args.batch_size, args.noise_dim).to(device)
 
             fake= netG(noise, sent_emb,words_embs,attr_emb0,attr_emb1,attr_emb2)
             fake_features = netD(fake.detach())
 
-            _, errD_fake = predict_loss(netC, fake_features, sent_emb, negtive=True)  # hinge loss，文本和图像的匹配程度
-            #_, errD_fake0 = predict_loss(netC, fake_features, attr_emb0, negtive=True)  # hinge loss，文本和图像的匹配程度
-            #_, errD_fake1 = predict_loss(netC, fake_features, attr_emb1, negtive=True)  # hinge loss，文本和图像的匹配程度
-            #_, errD_fake2 = predict_loss(netC, fake_features, attr_emb2, negtive=True)  # hinge loss，文本和图像的匹配程度
+            _, errD_fake = predict_loss(netC, fake_features, sent_emb, negtive=True)  
+            #_, errD_fake0 = predict_loss(netC, fake_features, attr_emb0, negtive=True)  
+            #_, errD_fake1 = predict_loss(netC, fake_features, attr_emb1, negtive=True)  
+            #_, errD_fake2 = predict_loss(netC, fake_features, attr_emb2, negtive=True)  
 
             errD_MAGP = MA_GP(imgs, sent_emb, pred_real)  # MAGP loss
             #errD_MAGP0 = MA_GP(imgs, attr_emb0, pred_real0)  # MAGP loss
@@ -304,7 +258,7 @@ def train(args):
 
 
         loop.close()
-        if epoch%1 == 0:
+        if epoch%10 == 0:
             print('saved',epoch)
             state = {'model': {'netG': netG.state_dict(),
                            'netD': netD.state_dict(), 'netC': netC.state_dict()},
@@ -326,92 +280,6 @@ def train(args):
             for param in netG.named_parameters():
                 param[1].requires_grad = True
             netG.train()
-
-def test(args):
-    args.batch_size=1
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    netG = NetG(args.nf, args.noise_dim, args.input_dim, args.imsize, args.ch_dim).to(device)
-
-    model_path = './Bird_checkpoints/state_epoch_1221.pth'
-    checkpoint = torch.load(model_path, map_location="cpu")
-    G_checkpoints = checkpoint['model']['netG']
-    #G_checkpoints = {
-    #    key[7:]: value
-    #    for key, value in G_checkpoints.items()
-    #}
-    netG.load_state_dict(G_checkpoints)
-    for p in netG.parameters():  # 锁死梯度
-        p.requires_grad = False
-    netG.eval()
-    from dataprocess import Bird_Dataset_DF_GAN,Flower_Dataset,Celeba_Dataset,Coco_Dataset
-    test_dataset = Bird_Dataset_DF_GAN('test')
-    loader_kwargs = {
-        'batch_size': 1,
-        'shuffle':False,
-        'drop_last': True,
-    }
-    test_loader = DataLoader(test_dataset, **loader_kwargs)
-
-    text_encoder = RNN_ENCODER(test_dataset.ixtoword.__len__(), nhidden=256)
-    state_dict = torch.load('./Bird_DAMSM/text_encoder200.pth',map_location="cpu")
-    text_encoder.load_state_dict(state_dict)
-    text_encoder.to(device)
-    for p in text_encoder.parameters():
-        p.requires_grad = False
-    text_encoder.eval()
-
-    for step, data in enumerate(test_loader, 0):
-        imgs,attrs,caps,cap_lens,_ = data
-
-        captions=[['this', 'bird', 'is', 'very', 'small', 'in', 'size', 'with', 'a', 'red', 'belly', 'and', 'grey','tail', '<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>','<end>']]
-        attributes=[['red', 'belly', '<end>','<end>','<end>','<end>'],['red', 'belly', '<end>','<end>','<end>'],['red', 'belly','<end>','<end>','<end>']]
-        for i in range(25):
-            caps[0][i]=test_dataset.wordtoix[captions[0][i]]
-            #print(test_dataset.ixtoword[int(caps[0][i])], end=' ')
-
-        print(step)
-        for i in range(3):
-            for j in range(5):
-                attrs[0][i][j] = test_dataset.wordtoix[attributes[i][j]]
-                #print(test_dataset.ixtoword[int(attrs[0][i][j])],end=' ')
-            #print()
-
-
-        sorted_cap_lens, sorted_cap_indices = torch.sort(cap_lens, 0, True)
-        caps = caps[sorted_cap_indices].to(device)
-        attrs = attrs[sorted_cap_indices].to(device)
-        sorted_cap_lens=sorted_cap_lens.to(device)
-        with torch.no_grad():
-            hidden = text_encoder.init_hidden(caps.size(0))
-            words_embs, sent_emb = text_encoder(caps, sorted_cap_lens, hidden)
-            words_embs, sent_emb = words_embs.detach(), sent_emb.detach()
-
-            attrs_len = torch.Tensor([5] * cap_lens.size(0)).to(device)
-            _, attr_emb0 = text_encoder(attrs[:, 0, :], attrs_len, hidden)
-            _, attr_emb1 = text_encoder(attrs[:, 1, :], attrs_len, hidden)
-            _, attr_emb2 = text_encoder(attrs[:, 2, :], attrs_len, hidden)
-            attr_emb0,attr_emb1,attr_emb2=attr_emb0.detach(),attr_emb1.detach(),attr_emb2.detach()
-
-
-            noise = truncated_noise(args.batch_size, args.noise_dim, 0.9)
-            noise = torch.tensor(noise, dtype=torch.float).to(device)
-            fake,w0,w1,w2 = netG(noise, sent_emb,words_embs,attr_emb0,attr_emb1,attr_emb2)
-            torchvision.utils.save_image(fake[0].data, './bird_ours_samples/' + str(step) + '.png', nrow=4, range=(-1, 1),normalize=True)
-
-            fake=torch.squeeze(fake)
-            fake=torch.transpose(fake,0,2)
-            fake=torch.transpose(fake,0,1).cpu().detach().numpy()
-            fake=(fake+1)/2
-            plt.subplot(2,2,1)
-            plt.imshow(fake)
-            plt.subplot(2,2,2)
-            plt.imshow(torch.squeeze(w0[0]).cpu().detach().numpy())
-            plt.subplot(2,2,3)
-            plt.imshow(torch.squeeze(w1[0]).cpu().detach().numpy())
-            plt.subplot(2,2,4)
-            plt.imshow(torch.squeeze(w2[0]).cpu().detach().numpy())
-            plt.show()
-            #torchvision.utils.save_image(fake[i].data, './Celeba_ours_samples/' + str(img_id) + '.png', nrow=4, range=(-1, 1), normalize=True)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
