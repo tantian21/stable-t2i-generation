@@ -124,14 +124,14 @@ class Bird_Dataset(data.Dataset):
             else:
                 all_attrs=np.load('./birds_data/test_attrs.npy',allow_pickle=True)
         if split=='test':
-            f = open("./birds_data/bird_images_test.txt", "r")  # 设置文件对象
+            f = open("./birds_data/bird_images_test.txt", "r") 
         else:
-            f = open("./birds_data/bird_images_train.txt", "r")  # 设置文件对象
+            f = open("./birds_data/bird_images_train.txt", "r") 
         line = f.readline()
-        while line:  # 直到读取完文件
+        while line:
             if not line:
                 break
-            line = line.replace('\n','') # 去掉换行符，也可以不去
+            line = line.replace('\n','')
             filenames.append(line)
             line=line.replace('CUB_200_2011/images','text')
             line=line.replace('.jpg','.txt')
@@ -166,21 +166,21 @@ class Bird_Dataset(data.Dataset):
                 if cnt_captions != 5:
                     print('the count of captions is not enough')
                     return 0
-            line = f.readline()  # 读取一行文件，包括换行符
+            line = f.readline() 
         if split=='test':
-            bbox_f = open("./birds_data/bboxs_test.txt", "r")  # 设置文件对象
+            bbox_f = open("./birds_data/bboxs_test.txt", "r") 
         else:
-            bbox_f = open("./birds_data/bboxs_train.txt", "r")  # 设置文件对象
+            bbox_f = open("./birds_data/bboxs_train.txt", "r") 
         line = bbox_f.readline()
         bboxs=[]
-        while line:  # 直到读取完文件
+        while line: 
             if not line:
                 break
-            line = line.replace('\n', '')  # 去掉换行符，也可以不去
+            line = line.replace('\n', '') 
             x1,width,x2,hight=line.split(' ')
             x1,width,x2,hight=float(x1),float(width),float(x2),float(hight)
             bboxs.append([x1,width,x2,hight])
-            line = bbox_f.readline()  # 读取一行文件，包括换行符
+            line = bbox_f.readline()
         if attrs_exists==False:
             if self.split == 'train':
                 np.save('./birds_data/train_attrs.npy', all_attrs)
@@ -237,7 +237,7 @@ class Bird_Dataset(data.Dataset):
                         print('word not in wordtoix')
                         continue
                     new_attr.append(self.wordtoix[w])
-                if new_attr.__len__()>5:#一个attr的单词数
+                if new_attr.__len__()>5:
                     ix = list(np.arange(new_attr.__len__()))  # 1, 2, 3,..., maxNum
                     np.random.shuffle(ix)
                     ix = ix[:5]
@@ -247,7 +247,7 @@ class Bird_Dataset(data.Dataset):
                 while new_attr.__len__()<5:
                     new_attr.append(0)
                 new_attrs.append(new_attr)
-            if new_attrs.__len__()>3:#attr数量
+            if new_attrs.__len__()>3:
                 ix = list(np.arange(new_attrs.__len__()))  # 1, 2, 3,..., maxNum
                 np.random.shuffle(ix)
                 ix = ix[:3]
