@@ -101,16 +101,16 @@ class Bird_Dataset(data.Dataset):
         all_captions=[]
         all_attrs=[]
         attrs_exists=False
-        if os.path.exists('../birds_data/train_attrs.npy') and os.path.exists('../birds_data/test_attrs.npy'):
+        if os.path.exists('./birds_data/train_attrs.npy') and os.path.exists('./birds_data/test_attrs.npy'):
             attrs_exists=True
             if self.split=='train':
-                all_attrs=np.load('../birds_data/train_attrs.npy',allow_pickle=True)
+                all_attrs=np.load('./birds_data/train_attrs.npy',allow_pickle=True)
             else:
-                all_attrs=np.load('../birds_data/test_attrs.npy',allow_pickle=True)
+                all_attrs=np.load('./birds_data/test_attrs.npy',allow_pickle=True)
         if split=='test':
-            f = open("../birds_data/bird_images_test.txt", "r") 
+            f = open("./birds_data/bird_images_test.txt", "r") 
         else:
-            f = open("../birds_data/bird_images_train.txt", "r")  
+            f = open("./birds_data/bird_images_train.txt", "r")  
         line = f.readline()
         while line: 
             if not line:
@@ -152,9 +152,9 @@ class Bird_Dataset(data.Dataset):
                     return 0
             line = f.readline()  
         if split=='test':
-            bbox_f = open("../birds_data/bboxs_test.txt", "r") 
+            bbox_f = open("./birds_data/bboxs_test.txt", "r") 
         else:
-            bbox_f = open("../birds_data/bboxs_train.txt", "r")  
+            bbox_f = open("./birds_data/bboxs_train.txt", "r")  
         line = bbox_f.readline()
         bboxs=[]
         while line: 
@@ -167,9 +167,9 @@ class Bird_Dataset(data.Dataset):
             line = bbox_f.readline()  
         if attrs_exists==False:
             if self.split == 'train':
-                np.save('../birds_data/train_attrs.npy', all_attrs)
+                np.save('./birds_data/train_attrs.npy', all_attrs)
             else:
-                np.save('../birds_data/test_attrs.npy', all_attrs)
+                np.save('./birds_data/test_attrs.npy', all_attrs)
         return filenames,all_captions,bboxs,all_attrs
 
     def build_dictionary(self, captions,  all_attrs):
@@ -194,8 +194,8 @@ class Bird_Dataset(data.Dataset):
                         print('word not in wordtoix')
                         continue
                     new_attr.append(self.wordtoix[w])
-                if new_attr.__len__()>5:#一个attr的单词数
-                    ix = list(np.arange(new_attr.__len__()))  # 1, 2, 3,..., maxNum
+                if new_attr.__len__()>5:
+                    ix = list(np.arange(new_attr.__len__()))  
                     np.random.shuffle(ix)
                     ix = ix[:5]
                     ix = np.sort(ix)
@@ -204,8 +204,8 @@ class Bird_Dataset(data.Dataset):
                 while new_attr.__len__()<5:
                     new_attr.append(0)
                 new_attrs.append(new_attr)
-            if new_attrs.__len__()>3:#attr数量
-                ix = list(np.arange(new_attrs.__len__()))  # 1, 2, 3,..., maxNum
+            if new_attrs.__len__()>3:
+                ix = list(np.arange(new_attrs.__len__()))  
                 np.random.shuffle(ix)
                 ix = ix[:3]
                 ix = np.sort(ix)
@@ -237,7 +237,7 @@ class Bird_Dataset_AFM(data.Dataset):
 
         for i in range(train_dataset.__len__()):
             filename=train_dataset.filenames[i]
-            filename=filename.replace('../data/birds/CUB_200_2011/images/','')
+            filename=filename.replace('./data/birds/CUB_200_2011/images/','')
             filename=filename.replace('.jpg','')
             if filename in data:
                 self.filenames.append(train_dataset.filenames[i])
@@ -255,7 +255,7 @@ class Bird_Dataset_AFM(data.Dataset):
 
         for i in range(test_dataset.__len__()):
             filename=test_dataset.filenames[i]
-            filename=filename.replace('../data/birds/CUB_200_2011/images/','')
+            filename=filename.replace('./data/birds/CUB_200_2011/images/','')
             filename=filename.replace('.jpg','')
             if filename in data:
                 self.filenames.append(test_dataset.filenames[i])
