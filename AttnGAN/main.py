@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 from miscc.config import cfg, cfg_from_file
-from datasets import Bird_Dataset_DF_GAN
+from datasets import Bird_Dataset
 from trainer import condGANTrainer as trainer
 
 import os
@@ -59,8 +59,8 @@ def train():
     torch.manual_seed(args.seed)
 
     # Get data loader
-    train_dataset = Bird_Dataset_DF_GAN('train')
-    test_dataset = Bird_Dataset_DF_GAN('test')
+    train_dataset = Bird_Dataset('train')
+    test_dataset = Bird_Dataset('test')
     loader_kwargs = {
         'batch_size': args.batch_size,
         'num_workers': args.num_workers,
@@ -98,10 +98,6 @@ def train():
 
     optimizersD = []
     num_Ds = len(netsD)
-    #for i in range(num_Ds):
-    #    opt = optim.Adam(netsD[i].parameters(), lr=0.0002, betas=(0.5, 0.999))
-    #    optimizersD.append(opt)
-    #optimizerG = optim.Adam(netG.parameters(), lr=0.0002, betas=(0.5, 0.999))
     for i in range(num_Ds):
         opt = optim.Adam(netsD[i].parameters(), lr=4e-5)
         optimizersD.append(opt)
@@ -138,9 +134,7 @@ def train():
     s1 = np.cov(pred_arr, rowvar=False)
 
     checkpoint = torch.load('../models/bird_AttnGAN2.pth',map_location=lambda storage, loc: storage)
-    netG.load_state_dict(checkpoint)
-    checkpoint = torch.load('./checkpoints/state_epoch_best_022.pth', map_location=lambda storage, loc: storage)
-    #netG.load_state_dict(checkpoint['model']['netG'])
+    netG.load_state_dict(checkpoint['model']['netG'])
     netsD[0].load_state_dict(checkpoint['model']['netD64'])
     netsD[1].load_state_dict(checkpoint['model']['netD128'])
     netsD[2].load_state_dict(checkpoint['model']['netD256'])
@@ -267,7 +261,7 @@ def train():
             loop.set_postfix()
         loop.close()
 
-        if epoch%1==0:
+        if epoch%10==0:
 
             for p in netG.parameters():
                 p.requires_grad = False
@@ -279,7 +273,7 @@ def train():
             iscore = inception_score(args, test_loader, text_encoder, netG, resize=True, splits=1)[0]
             print('IS:',iscore)
 
-            if True:#mn_fid>fid:
+            if True:
                 mn_fid=min(mn_fid,fid)
 
                 state = {'model': {'netG': netG.state_dict(),
