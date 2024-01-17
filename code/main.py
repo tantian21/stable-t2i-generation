@@ -25,7 +25,6 @@ import torchvision.utils
 from nltk.tokenize import RegexpTokenizer
 from tqdm import tqdm
 from dataprocess import Bird_Dataset
-from GlobalAttention import GlobalAttentionGeneral, ResBlock, GLU, NonLocalBlock
 from Encoder import RNN_ENCODER,CNN_ENCODER,NetG,NetD,NetC
 from fid_cal import get_m1_s1,calculate,InceptionV3
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
