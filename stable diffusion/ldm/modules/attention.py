@@ -216,38 +216,12 @@ class CrossAttention(nn.Module):
 
                 sim=torch.cat([sim,1-sim],dim=2)
                 sim=torch.softmax(sim,dim=2)
-                # mn = torch.min(sim)
-                # mx = torch.max(sim)
-                # sim = (sim - mn) / (mx - mn + 1e-8)
-                # sim=sim.detach()
-                # out_a=out_a.detach()
                 out = sim[:,:,0:1]*out +  sim[:,:,1:2]*out_a
 
-                if sim.shape[1]==4096 and step==1:
-                    if self.tmp%20==1:
-                        import numpy as np
-                        sim=sim[1:2,:,1:2]
-                        sim=torch.reshape(sim,[64,64])
-                        sim = sim.cpu().detach()
-                        plt.imsave('./attnmap1/a'+str(self.tmp)+'.png',np.array(sim))
-                        self.tmp+=1
-                    elif self.tmp%20==0:
-                        continue
-
-
-
-                #这个可以 没有mn mx
-                # out = (1 - sim)*out + (1 - sim) * out_a
 
                 if step==1:
                     break
 
-            # if sim.shape[1]==4096:
-            #     print(sim.shape)
-            #     s=sim[1,:,0]
-            #     s=torch.reshape(s,[64,64])
-            #     plt.imshow(1-s.cpu().detach())
-            #     plt.show()
         return self.to_out(out)
 
 
