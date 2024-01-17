@@ -40,3 +40,7 @@ Download the code and pretrained model form [AttnGAN](https://github.com/taoxugi
 |Baseline(AttnGAN)+AFM|10.42|5.15|
 
 # Diffusion
+|Model|CUB-FID↓|CUB-IS↑|
+|---|---|---|
+|Diffusion|35.02|3.94|
+|Baseline(Diffusion)+AFM|34.69|4.40|
