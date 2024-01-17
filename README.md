@@ -44,3 +44,4 @@ Download the code and pretrained model form [AttnGAN](https://github.com/taoxugi
 |---|---|---|
 |Diffusion|35.02|3.94|
 |Baseline(Diffusion)+AFM|34.69|4.40|
+Download the code and [pretrained model](https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned.ckpt) from [Diffusion](https://github.com/CompVis/stable-diffusion) and replace the file in stable-t2i-generation/Diffusion.
