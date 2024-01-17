@@ -677,7 +677,7 @@ class Coco_Dataset(data.Dataset):
         self.class_id = np.arange(self.filenames.__len__())
 
         # dict={'caps':self.all_captions,'attrs':self.attrs}
-        # file=open('./data/coco/'+split+'.pickle','wb')
+        # file=open('./data/coco/'+split+'.pickle','wb')#this file is available in DAE-GAN https://github.com/hiarsal/dae-gan
         # pickle.dump(dict,file)
         # file.close()
 
