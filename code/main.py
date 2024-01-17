@@ -218,7 +218,7 @@ def train(args):
 
             errD_MAGP = MA_GP(imgs, sent_emb, pred_real)  # MAGP loss
 
-            errD = errD_real + (errD_mis+errD_fake)/2.0 + errD_MAGP #+ (errD_real0 + ((errD_mis0+errD_fake0)/2.0 + errD_MAGP0)+(errD_real1 + (errD_mis1+errD_fake1)/2.0 + errD_MAGP1)+(errD_real2 + (errD_mis2+errD_fake2)/2.0 + errD_MAGP2))/3.0
+            errD = errD_real + (errD_mis+errD_fake)/2.0 + errD_MAGP 
             optimizerD.zero_grad()
             errD.backward()
             optimizerD.step()
@@ -229,7 +229,7 @@ def train(args):
             #output1 = netC(fake_features, attr_emb1)
             #output2 = netC(fake_features, attr_emb2)
 
-            errG = -output.mean()#-(output0.mean()+output1.mean()+output2.mean())
+            errG = -output.mean()
 
             optimizerG.zero_grad()
             errG.backward()
