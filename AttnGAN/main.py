@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 from miscc.config import cfg, cfg_from_file
-from datasets import Bird_Dataset
+from datasets import Bird_Dataset_AFM
 from trainer import condGANTrainer as trainer
 
 import os
@@ -59,8 +59,8 @@ def train():
     torch.manual_seed(args.seed)
 
     # Get data loader
-    train_dataset = Bird_Dataset('train')
-    test_dataset = Bird_Dataset('test')
+    train_dataset = Bird_Dataset_AFM('train')
+    test_dataset = Bird_Dataset_AFM('test')
     loader_kwargs = {
         'batch_size': args.batch_size,
         'num_workers': args.num_workers,
