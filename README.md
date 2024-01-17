@@ -31,3 +31,8 @@ For [coco](https://drive.google.com/file/d/1dszvfAsCvWiyHrD0cv_Pdlh_07p-UaWS/vie
 |---|---|---|
 |FID↓|10.14|14.59|
 |IS↑|5.20|20.09|
+
+# AttnGAN
+Download the code and pretrained model form [AttnGAN](https://github.com/taoxugit/AttnGAN) and replace the file in stable-t2i-generation/AttnGAN.
+
+# Diffusion
