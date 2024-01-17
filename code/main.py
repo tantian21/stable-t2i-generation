@@ -281,7 +281,7 @@ if __name__ == '__main__':
     parser.add_argument('--image_embending_dim',type=int,default=256,help='image encoder dim')
     parser.add_argument('--npz_path',default='./data/birds/npz/bird_val256_FIDK0.npz',type=str)
     parser.add_argument('--sample_times',default=10,type=int)
-    parser.add_argument('--load_model_path',default='../best_tmp/best.pth')
+    parser.add_argument('--load_model_path',default='./checkpoints/CUB.pth')
     parser.add_argument('--device',default=torch.device("cuda" if torch.cuda.is_available() else "cpu"),help='cuda or cpu')
     args = parser.parse_args()
     random.seed(args.seed)
