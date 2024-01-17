@@ -71,11 +71,6 @@ def train(args):
     netD.train()
     netC.train()
 
-    # G_params=list(netG.parameters())
-    # optimizerG = torch.optim.Adam(G_params, lr=0.0001*0.1, betas=(0.0, 0.9))
-    # D_params = list(netD.parameters()) +  list(netC.parameters())
-    # optimizerD = torch.optim.Adam(D_params, lr=0.0004*0.1, betas=(0.0, 0.9))
-
     G_params = list(netG.parameters())
     optimizerG = torch.optim.Adam(G_params, lr=0.0001 * 0.1, betas=(0.0, 0.9))
     D_params = list(netD.parameters()) + list(netC.parameters())
@@ -211,14 +206,8 @@ def train(args):
 
             real_features= netD(imgs)
             pred_real, errD_real = predict_loss(netC, real_features,sent_emb, negtive=False)  
-            #pred_real0, errD_real0 = predict_loss(netC, real_features,attr_emb0, negtive=False) 
-            #pred_real1, errD_real1 = predict_loss(netC, real_features,attr_emb1, negtive=False)  
-            #pred_real2, errD_real2 = predict_loss(netC, real_features,attr_emb2, negtive=False)  
             mis_features = torch.cat((real_features[batch_size//2:], real_features[:batch_size//2]), dim=0)
             _, errD_mis = predict_loss(netC, mis_features, sent_emb, negtive=True)  
-            #_, errD_mis0 = predict_loss(netC, mis_features, attr_emb0, negtive=True)  
-            #_, errD_mis1 = predict_loss(netC, mis_features, attr_emb1, negtive=True)  
-            #_, errD_mis2 = predict_loss(netC, mis_features, attr_emb2, negtive=True)  
 
             noise = torch.randn(args.batch_size, args.noise_dim).to(device)
 
@@ -226,14 +215,8 @@ def train(args):
             fake_features = netD(fake.detach())
 
             _, errD_fake = predict_loss(netC, fake_features, sent_emb, negtive=True)  
-            #_, errD_fake0 = predict_loss(netC, fake_features, attr_emb0, negtive=True)  
-            #_, errD_fake1 = predict_loss(netC, fake_features, attr_emb1, negtive=True)  
-            #_, errD_fake2 = predict_loss(netC, fake_features, attr_emb2, negtive=True)  
 
             errD_MAGP = MA_GP(imgs, sent_emb, pred_real)  # MAGP loss
-            #errD_MAGP0 = MA_GP(imgs, attr_emb0, pred_real0)  # MAGP loss
-            #errD_MAGP1 = MA_GP(imgs, attr_emb1, pred_real1)  # MAGP loss
-            #errD_MAGP2 = MA_GP(imgs, attr_emb2, pred_real2)  # MAGP loss
 
             errD = errD_real + (errD_mis+errD_fake)/2.0 + errD_MAGP #+ (errD_real0 + ((errD_mis0+errD_fake0)/2.0 + errD_MAGP0)+(errD_real1 + (errD_mis1+errD_fake1)/2.0 + errD_MAGP1)+(errD_real2 + (errD_mis2+errD_fake2)/2.0 + errD_MAGP2))/3.0
             optimizerD.zero_grad()
