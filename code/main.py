@@ -304,5 +304,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     random.seed(args.seed)
     np.random.seed(args.seed)
-    torch.manual_seed(args.seed)  # 设置CPU生成随机数的种子，方便复现实验结果。
+    torch.manual_seed(args.seed) 
     train(args)
