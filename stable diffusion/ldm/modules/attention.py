@@ -219,8 +219,6 @@ class CrossAttention(nn.Module):
                 out = sim[:,:,0:1]*out +  sim[:,:,1:2]*out_a
 
 
-                if step==1:
-                    break
 
         return self.to_out(out)
 
