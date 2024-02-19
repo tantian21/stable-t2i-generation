@@ -688,9 +688,9 @@ class Coco_Dataset(data.Dataset):
 
         img_path = self.filenames[index]
         if self.split=='train':
-            img_path='./data/coco/images/train2014/'+img_path+'.jpg'
+            img_path='../data/coco/images/train2014/'+img_path+'.jpg'
         else:
-            img_path = './data/coco/images/test2014/' + img_path+'.jpg'
+            img_path = '../data/coco/images/test2014/' + img_path+'.jpg'
         img = Image.open(img_path).convert('RGB')
         img = self.transform(img)
         img = self.norm(img)
@@ -746,10 +746,10 @@ class Coco_Dataset(data.Dataset):
     def load_coco_dataset(self,split):
         import pickle
 
-        filepath = './data/coco/captions.pickle'
-        file = open('./data/coco/train/filenames.pickle', 'rb')
+        filepath = '../data/coco/captions.pickle'
+        file = open('../data/coco/train/filenames.pickle', 'rb')
         train_names = pickle.load(file)
-        file = open('./data/coco/test/filenames.pickle', 'rb')
+        file = open('../data/coco/test/filenames.pickle', 'rb')
         test_names = pickle.load(file)
 
         with open(filepath, 'rb') as f:
@@ -770,12 +770,12 @@ class Coco_Dataset(data.Dataset):
             attrs = test_attrs
             filenames = test_names
         if(split=='train'):
-            file = open('./data/coco/train.pickle', 'rb')
+            file = open('../data/coco/train.pickle', 'rb')
             train_names = pickle.load(file)
             captions=train_names['caps']
             attrs=train_names['attrs']
         else:
-            file = open('./data/coco/test.pickle', 'rb')
+            file = open('../data/coco/test.pickle', 'rb')
             test_names = pickle.load(file)
             captions=test_names['caps']
             attrs=test_names['attrs']
