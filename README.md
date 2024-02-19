@@ -34,7 +34,8 @@ For [coco](https://drive.google.com/file/d/1dszvfAsCvWiyHrD0cv_Pdlh_07p-UaWS/vie
 
 # AttnGAN
 Download the code and pretrained model form [AttnGAN](https://github.com/taoxugit/AttnGAN) and replace the file in stable-t2i-generation/AttnGAN.
-The Attribute Fusion Module is added in G_NET
+
+The Attribute Fusion Module is added in AttnGAN/model/G_NET.
 |Model|CUB-FID↓|CUB-IS↑|
 |---|---|---|
 |AttnGAN|13.20|4.36|
