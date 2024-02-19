@@ -35,7 +35,7 @@ For [coco](https://drive.google.com/file/d/1dszvfAsCvWiyHrD0cv_Pdlh_07p-UaWS/vie
 # AttnGAN
 Download the code and pretrained model form [AttnGAN](https://github.com/taoxugit/AttnGAN) and replace the file in stable-t2i-generation/AttnGAN.
 
-The Attribute Fusion Module is added in AttnGAN/model/G_NET.
+The Attribute Fusion Module is added in AttnGAN/model.py/G_NET.
 |Model|CUB-FID↓|CUB-IS↑|
 |---|---|---|
 |AttnGAN|13.20|4.36|
@@ -48,3 +48,5 @@ The Attribute Fusion Module is added in AttnGAN/model/G_NET.
 |Baseline(Diffusion)+AFM|34.69|4.40|
 
 Download the code from [Diffusion](https://github.com/CompVis/stable-diffusion) and pretrained model [v1-5-pruned.ckpt](https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned.ckpt) and replace the file in stable-t2i-generation/Diffusion.
+
+The Attribute Fusion Module is added in stable diffusion/ldm/modules/attention.py/CrossAttention.
