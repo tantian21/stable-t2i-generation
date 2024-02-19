@@ -551,7 +551,7 @@ class Bird_Dataset_AFM(data.Dataset):
 
         for i in range(train_dataset.__len__()):
             filename=train_dataset.filenames[i]
-            filename=filename.replace('./data/birds/CUB_200_2011/images/','')
+            filename=filename.replace('../data/birds/CUB_200_2011/images/','')
             filename=filename.replace('.jpg','')
             if filename in data:
                 self.filenames.append(train_dataset.filenames[i])
@@ -575,7 +575,7 @@ class Bird_Dataset_AFM(data.Dataset):
 
         for i in range(test_dataset.__len__()):
             filename = test_dataset.filenames[i]
-            filename = filename.replace('./data/birds/CUB_200_2011/images/', '')
+            filename = filename.replace('../data/birds/CUB_200_2011/images/', '')
             filename = filename.replace('.jpg', '')
             if filename in data:
                 self.filenames.append(test_dataset.filenames[i])
