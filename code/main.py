@@ -119,8 +119,12 @@ def train(args):
 
     batch_size=args.batch_size
 
-    train_dataset = Bird_Dataset('train')
-    test_dataset = Bird_Dataset('test')
+    if args.dataset=='bird':
+        train_dataset = Bird_Dataset('train')
+        test_dataset = Bird_Dataset('test')
+    elif args.dataset=='coco':
+        train_dataset = Coco_Dataset('train')
+        test_dataset = Coco_Dataset('test')
     loader_kwargs = {
         'batch_size': args.batch_size,
         'num_workers': args.num_workers,
@@ -131,7 +135,10 @@ def train(args):
     test_loader = DataLoader(test_dataset, **loader_kwargs)
 
     text_encoder = RNN_ENCODER(train_dataset.ixtoword.__len__(), nhidden=256)
-    state_dict = torch.load('./Bird_DAMSM/text_encoder200.pth', map_location='cpu')
+    if args.dataset=='bird':
+        state_dict = torch.load('../data/birds/DAMSMencoder/text_encoder200.pth', map_location='cpu')
+    elif args.dataset=='coco':
+        state_dict = torch.load('../data/coco/DAMSMencoder/text_encoder100.pth', map_location='cpu')
     text_encoder.load_state_dict(state_dict)
     text_encoder.to(device)
     for p in text_encoder.parameters():
@@ -224,10 +231,7 @@ def train(args):
 
             fake_features = netD(fake)
             output = netC(fake_features, sent_emb)
-            #output0 = netC(fake_features, attr_emb0)
-            #output1 = netC(fake_features, attr_emb1)
-            #output2 = netC(fake_features, attr_emb2)
-
+            
             errG = -output.mean()
 
             optimizerG.zero_grad()
@@ -278,9 +282,11 @@ if __name__ == '__main__':
     parser.add_argument('--truncation', type=bool, default=True,help='is truncation')
     parser.add_argument('--trunc_rate', type=float, default=0.88,help='truncation rate')
     parser.add_argument('--image_embending_dim',type=int,default=256,help='image encoder dim')
-    parser.add_argument('--npz_path',default='./data/birds/npz/bird_val256_FIDK0.npz',type=str)
+    parser.add_argument('--npz_path',default='../data/birds/npz/bird_val256_FIDK0.npz',type=str)
+    #parser.add_argument('--npz_path',default='../data/coco/npz/coco_val256_FIDK0.npz',type=str)
     parser.add_argument('--sample_times',default=10,type=int)
-    parser.add_argument('--load_model_path',default='./checkpoints/CUB.pth')
+    parser.add_argument('--load_model_path',default='./saved_models/bird/CUB.pth')
+    #parser.add_argument('--load_model_path',default='./saved_models/coco/coco.pth')
     parser.add_argument('--device',default=torch.device("cuda" if torch.cuda.is_available() else "cpu"),help='cuda or cpu')
     args = parser.parse_args()
     random.seed(args.seed)
