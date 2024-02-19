@@ -132,6 +132,7 @@ class Bird_Dataset(data.Dataset):
             if not line:
                 break
             line = line.replace('\n','')
+            line='.'+line
             filenames.append(line)
             line=line.replace('CUB_200_2011/images','text')
             line=line.replace('.jpg','.txt')
