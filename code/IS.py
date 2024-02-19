@@ -20,8 +20,6 @@ import torchvision.transforms as transforms
 from tqdm import tqdm
 from torch.nn.functional import adaptive_avg_pool2d
 
-from vqvae import VQVAE
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]="3"
