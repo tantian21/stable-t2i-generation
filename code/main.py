@@ -24,7 +24,7 @@ from torch.autograd import Variable
 import torchvision.utils
 from nltk.tokenize import RegexpTokenizer
 from tqdm import tqdm
-from dataprocess import Bird_Dataset,Coco_Dataset
+from dataprocess import Bird_Dataset_AFM,Coco_Dataset
 from Encoder import RNN_ENCODER,CNN_ENCODER,NetG,NetD,NetC
 from fid_cal import get_m1_s1,calculate,InceptionV3
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -120,8 +120,8 @@ def train(args):
     batch_size=args.batch_size
 
     if args.dataset=='bird':
-        train_dataset = Bird_Dataset('train')
-        test_dataset = Bird_Dataset('test')
+        train_dataset = Bird_Dataset_AFM('train')
+        test_dataset = Bird_Dataset_AFM('test')
     elif args.dataset=='coco':
         train_dataset = Coco_Dataset('train')
         test_dataset = Coco_Dataset('test')
