@@ -284,7 +284,8 @@ if __name__ == '__main__':
     parser.add_argument('--image_embending_dim',type=int,default=256,help='image encoder dim')
     parser.add_argument('--npz_path',default='../data/birds/npz/bird_val256_FIDK0.npz',type=str)
     #parser.add_argument('--npz_path',default='../data/coco/npz/coco_val256_FIDK0.npz',type=str)
-    parser.add_argument('--sample_times',default=10,type=int)
+    parser.add_argument('--sample_times',default=10,type=int)#for CUB
+    #parser.add_argument('--sample_times',default=1,type=int)#for COCO
     parser.add_argument('--load_model_path',default='./saved_models/bird/CUB.pth')
     #parser.add_argument('--load_model_path',default='./saved_models/coco/coco.pth')
     parser.add_argument('--device',default=torch.device("cuda" if torch.cuda.is_available() else "cpu"),help='cuda or cpu')
