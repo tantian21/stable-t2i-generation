@@ -28,8 +28,6 @@ import warnings
 import scipy
 import cv2
 
-from vqvae import VQVAE
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
